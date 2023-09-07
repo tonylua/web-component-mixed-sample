@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <template id="provider-template">
+      <style>
+        :host {
+          display: inline-block;
+          border: 1px solid blue;
+          border-radius: 5px;
+          box-sizing: border-box;
+          width: 300px;
+          text-align: center;
+          padding: 50px;
+          line-height: 30px;
+        }
+      </style>
+      <p>loading...</p>
+    </template>
+
+    <style></style>
+  </head>
+  <body>
+    <script type="text/javascript">
+      class WeatherProvider extends HTMLElement {
+        constructor() {
+          super();
+          this._shadowRoot = this.attachShadow({ mode: "open" });
+          this._myTitle = null;
+          this._myData = [];
+        }
+
+        static get observedAttributes() {return ['my-title']; }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (name === "my-title") {
+            this._myTitle = newValue;
+            this._update();
+          }
+        }
+        async connectedCallback() {
+          const json = await fetch('./weather-data.json').then(res => res.json());
+
+          this._myData = json;
+          this._update(json.length);
+        }
+
+        _update(content = '') {
+          const template = document.getElementById("provider-template");
+          const templateContent = template.content;
+
+          const clone = templateContent.cloneNode(true);
+          const pEle = clone.querySelector('p');
+          pEle.textContent = content ? `${this._myTitle}: ${content}` : 'loading...';
+
+          this._shadowRoot.innerHTML = '';
+          this._shadowRoot.appendChild(clone);
+        }
+      }
+
+      window.customElements.define('weather-provider',WeatherProvider);
+    </script>
+
+    <weather-provider my-title="天气预报总数" />
+  </body>
+</html>
+

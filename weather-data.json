@@ -1,0 +1,17 @@
+[
+  {
+    "key": "beijing",
+    "label": "北京",
+    "value": 30
+  },
+  {
+    "key": "tianjin",
+    "label": "天津",
+    "value": 32
+  },
+  {
+    "key": "shanghai",
+    "label": "上海",
+    "value": 35
+  }
+]
