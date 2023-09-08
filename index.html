@@ -1,8 +1,18 @@
 <html>
   <head>
     <title>web components test</title>
-    <script src="https://unpkg.com/vue@2.6.0/dist/vue.js"></script>
-    <script src="./vue2-web-component/dist/vue2-weather-consumer.umd.min.js" defer></script>
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js"></script>
+    <script type="text/javascript" defer>
+      window.Vue3 = window.Vue;
+    </script>
+    <script src="https://unpkg.com/vue@2.6.0/dist/vue.js" defer></script>
+    <style>
+      #consumer2 {
+        --vue3-color: pink;
+        display: block;
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <body>
     <template id="provider-template">
@@ -24,24 +34,36 @@
     <script src="./src/WeatherProvider.js" defer></script>
 
     <div style="display: flex; flex-direction: row; gap: 20px;">
-      <weather-provider id="provider" my-title="天气预报总数"></weather-provider>
+      <weather-provider
+        id="provider"
+        my-title="天气预报总数"
+      ></weather-provider>
       <div>
-        <vue2-weather-consumer
-          id="consumer1"
-          city=""
-          temperature=""
-        />
+        <vue2-weather-consumer id="consumer1"></vue2-weather-consumer>
+        <vue3-weather-consumer id="consumer2"></vue3-weather-consumer>
       </div>
     </div>
 
+    <script
+      src="./vue2-web-component/dist/vue2-weather-consumer.umd.min.js"
+      defer
+    ></script>
+    <script
+      src="./vue3-web-component/dist/vue3-weather-consumer.umd.js"
+      defer
+    ></script>
     <script type="text/javascript">
-      window.addEventListener('DOMContentLoaded', () => {
-        const $provider = document.getElementById('provider');
-        const $consumer1 = document.getElementById('consumer1');
-        $provider.addEventListener('weather-fetched', (e) => {
+      window.addEventListener("DOMContentLoaded", () => {
+        const $provider = document.getElementById("provider");
+        $provider.addEventListener("weather-fetched", (e) => {
           const arr = e.detail;
-          $consumer1.setAttribute('city', arr[0].label);
-          $consumer1.setAttribute('temperature', arr[0].value);
+          const $consumer1 = document.getElementById("consumer1");
+          $consumer1.setAttribute("city", arr[0].label);
+          $consumer1.setAttribute("temperature", arr[0].value);
+
+          const $consumer2 = document.getElementById("consumer2");
+          $consumer2.setAttribute("city", arr[1].label);
+          $consumer2.setAttribute("temperature", arr[1].value);
         });
       });
     </script>
