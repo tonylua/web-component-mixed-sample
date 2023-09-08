@@ -3,16 +3,20 @@ class WeatherProvider extends HTMLElement {
     super();
     this._shadowRoot = this.attachShadow({ mode: "open" });
     this._myTitle = null;
+    this._clickedCity = null;
     this._myData = [];
   }
   static get observedAttributes() {
-    return ["my-title"];
+    return ["my-title", "clicked-city"];
   }
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === "my-title") {
       this._myTitle = newValue;
-      this._update();
     }
+    if (name === "clicked-city") {
+      this._clickedCity = newValue;
+    }
+    this._update();
   }
   async connectedCallback() {
     const json = await fetch("./weather-data.json").then((res) => res.json());
@@ -26,15 +30,19 @@ class WeatherProvider extends HTMLElement {
     );
 
     this._myData = json;
-    this._update(json.length);
+    this._update();
   }
-  _update(content = "") {
+  _update() {
     const template = document.getElementById("provider-template");
     const templateContent = template.content;
 
     const clone = templateContent.cloneNode(true);
     const pEle = clone.querySelector("p");
-    pEle.textContent = content ? `${this._myTitle}: ${content}` : "loading...";
+    pEle.textContent = this._myData?.length
+      ? `${this._myTitle}: ${this._myData.length} ${
+          this._clickedCity ? "点击了" + this._clickedCity : ""
+        }`
+      : "loading...";
 
     this._shadowRoot.innerHTML = "";
     this._shadowRoot.appendChild(clone);
