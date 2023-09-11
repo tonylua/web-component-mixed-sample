@@ -632,36 +632,29 @@ window.customElements.get("standalone-component") ||
 
 另一种更方便的方式是依靠 react 社区中的工具，常见的如：
 
+- [react-web-component](https://github.com/LukasBombach/react-web-component#readme)
 - [direflow](https://github.com/Silind-Software/direflow)
 - [react-to-web-component](https://github.com/bitovi/react-to-web-component)
 
-> For basic usage, we will use this simple React component:
-> 
-> ```
-> const Greeting = () => {
->   return <h1>Hello, World!</h1>
-> }
-> ```
-> 
-> With our React component complete, all we have to do is call `r2wc` and [customElements.define](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define) to create and define our custom element:
-> 
-> ```
-> import r2wc from "@r2wc/react-to-web-component"
-> 
-> const WebGreeting = r2wc(Greeting)
-> 
-> customElements.define("web-greeting", WebGreeting)
-> ```
-> 
-> Now we can use `<web-greeting>` like any other HTML element!
-> 
-> ```
-> <body>
->   <h1>Greeting Demo</h1>
-> 
->   <web-greeting></web-greeting>
-> </body>
-> ```
+```
+import React from 'react';
+import ReactWebComponent from 'react-web-component';
+
+class MyComponent extends React.Component {
+  render() {
+    return <div>Hello World!</div>;
+  }
+}
+
+class AnotherComponent extends React.Component {
+  render() {
+    return <div>Hello {this.props.name}!</div>;
+  }
+}
+
+ReactWebComponent.create(<MyComponent />, 'my-component');
+ReactWebComponent.create(<AnotherComponent name="Mars" />, 'another-component');
+```
 
 ### [Vue3](https://vuejs.org/)
 

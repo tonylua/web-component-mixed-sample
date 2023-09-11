@@ -1,0 +1,7 @@
+:host .consumer {
+  border: 1px dashed #f23288;
+  border-radius: 10px;
+  width: 300px;
+  box-sizing: border-box;
+  padding: 20px;
+}

@@ -12,6 +12,13 @@
         display: block;
         margin-top: 20px;
       }
+      #consumer3 {
+        display: block;
+        margin-top: 20px;
+      }
+      #consumer3::part(title) {
+        color: #c2c2c2;
+      }
     </style>
   </head>
   <body>
@@ -51,6 +58,7 @@
       <div>
         <vue2-weather-consumer id="consumer1"></vue2-weather-consumer>
         <vue3-weather-consumer id="consumer2"></vue3-weather-consumer>
+        <react-weather-consumer id="consumer3"></react-weather-consumer>
       </div>
     </div>
 
@@ -62,13 +70,18 @@
       src="./vue3-web-component/dist/vue3-weather-consumer.umd.js"
       defer
     ></script>
+    <script
+      src="./react-web-component/build/static/js/main.3ecdec78.js"
+      defer
+    ></script>
     <script type="text/javascript">
       window.addEventListener("DOMContentLoaded", () => {
         const $provider = document.getElementById("provider");
 
-        const onCityClick = (city) => {
-          console.log(city.detail);
-          $provider.setAttribute("clicked-city", city.detail[0]);
+        const onCityClick = (e) => {
+          console.log("on click", e.detail);
+          const city = Array.isArray(e) ? e.detail[0] : e.detail;
+          $provider.setAttribute("clicked-city", city);
         };
 
         $provider.addEventListener("weather-fetched", (e) => {
@@ -83,9 +96,13 @@
           $consumer2.setAttribute("city", arr[1].label);
           $consumer2.setAttribute("temperature", arr[1].value);
           $consumer2.addEventListener("msg", onCityClick);
+
+          const $consumer3 = document.getElementById("consumer3");
+          $consumer3.setAttribute("city", arr[2].label);
+          $consumer3.setAttribute("temperature", arr[2].value);
+          $consumer3.addEventListener("msg", onCityClick);
         });
       });
     </script>
   </body>
 </html>
-
