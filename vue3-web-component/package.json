@@ -10,7 +10,8 @@
     "build:wc": "vue-tsc --noEmit && vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "postinstall": "npm run build:wc && cp dist/vue3-weather-consumer.umd.js public/comp.js"
   },
   "dependencies": {
     "vue": "^3.3.4"

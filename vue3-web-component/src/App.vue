@@ -1,22 +1,38 @@
 <script setup lang="ts">
-import { defineCustomElement } from 'vue'
-import WeatherConsumer from './components/WeatherConsumer.ce.vue';
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import * as Vue from "vue";
+import { defineCustomElement, onMounted } from "vue";
+import WeatherConsumer from "./components/WeatherConsumer.ce.vue";
+import HelloWorld from "./components/HelloWorld.vue";
+import TheWelcome from "./components/TheWelcome.vue";
 
-console.log(WeatherConsumer.styles);
+window.Vue3 = Vue;
+onMounted(() => {
+  const s = document.createElement("script");
+  // cp /dist file to /public
+  s.src = "/comp.umd.js";
+  document.body.appendChild(s);
+});
+// console.log(WeatherConsumer.styles);
 
-const ExampleElement = defineCustomElement(WeatherConsumer)
-customElements.define('my-example', ExampleElement)
+const ExampleElement = defineCustomElement(WeatherConsumer);
+customElements.define("my-example", ExampleElement);
+
+const onMsg = (e: CustomEvent) => alert(e.detail);
 </script>
 
 <template>
   <header>
-      <my-example id="my-example" city="海参崴" :temperature="10" />
+    <my-example id="my-example" city="海参崴" :temperature="10" @msg="onMsg" />
+    <vue3-weather-consumer
+      id="my-example"
+      city="庙街"
+      :temperature="1024"
+      @msg="onMsg"
+    />
   </header>
 
   <main>
-      <HelloWorld msg="You did it!" />
+    <HelloWorld msg="You did it!" />
     <TheWelcome />
   </main>
 </template>
