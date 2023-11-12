@@ -13,6 +13,10 @@ export default {
       this.$emit("msg", this.city);
     },
   },
+  created() {
+    window.abc = 222;
+    console.log("vue2 abc", window.abc, window);
+  },
 };
 </script>
 

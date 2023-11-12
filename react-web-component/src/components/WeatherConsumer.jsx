@@ -13,6 +13,9 @@ const sty = `
 export default function WeatherConsumer(props) {
   const { city, temperature, onMsg } = props;
 
+  window.abc = "react 111";
+  console.log(window.abc);
+
   const compRef = useRef(null);
 
   const onCompClick = () => {

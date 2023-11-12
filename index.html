@@ -1,6 +1,8 @@
 <html>
   <head>
     <title>web components test</title>
+
+    <script src="https://unpkg.com/esprima@4.0.1/dist/esprima.js"></script>
     <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.prod.js"></script>
     <script type="text/javascript" defer>
       window.Vue3 = window.Vue;
@@ -43,18 +45,13 @@
           line-height: 30px;
         }
       </style>
-      <h1 style="color: #ddd;">&lt;weather-provider/&gt;</h1>
+      <h1 style="color: #ddd">&lt;weather-provider/&gt;</h1>
       <p>loading...</p>
     </template>
     <script src="./src/WeatherProvider.js" defer></script>
 
     <div
-      style="
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 20px;
-      "
+      style="display: flex; flex-direction: row; align-items: center; gap: 20px"
     >
       <div>
         <weather-provider
@@ -70,18 +67,21 @@
       </div>
     </div>
 
-    <script
-      src="./vue2-web-component/dist/vue2-weather-consumer.umd.min.js"
-      defer
-    ></script>
-    <script
-      src="./vue3-web-component/dist/vue3-weather-consumer.umd.js"
-      defer
-    ></script>
-    <script
-      src="./react-web-component/build/weather_consumer.js"
-      defer
-    ></script>
+    <!-- <script -->
+    <!--   src="./vue2-web-component/dist/vue2-weather-consumer.umd.min.js" -->
+    <!--   defer -->
+    <!-- ></script> -->
+    <!-- <script -->
+    <!--   src="./vue3-web-component/dist/vue3-weather-consumer.umd.js" -->
+    <!--   defer -->
+    <!-- ></script> -->
+    <!-- <script -->
+    <!--   src="./react-web-component/build/weather_consumer.js" -->
+    <!--   defer -->
+    <!-- ></script> -->
+    <!--  -->
+    <script type="module" src="./src/utils/sandbox/ProxySandbox.js"></script>
+
     <script type="text/javascript">
       window.addEventListener("DOMContentLoaded", () => {
         const $provider = document.getElementById("provider");
@@ -92,23 +92,39 @@
           $provider.setAttribute("clicked-city", city);
         };
 
-        $provider.addEventListener("weather-fetched", (e) => {
+        $provider.addEventListener("weather-fetched", async (e) => {
           const arr = e.detail;
 
+          // const sandbox1 = new ProxySandbox("wc-sandbox");
+          // (async function (window) {
+          //   sandbox1.active();
+          //   console.log("vue2 sandbox", window);
+          await import("/vue2-web-component/dist/vue2-weather-consumer.umd.js");
           const $consumer1 = document.getElementById("consumer1");
           $consumer1.setAttribute("city", arr[0].label);
           $consumer1.setAttribute("temperature", arr[0].value);
           $consumer1.addEventListener("msg", onCityClick);
+          // })(sandbox1.proxy);
 
+          // const sandbox2 = new ProxySandbox("wc-sandbox");
+          // (async function (window) {
+          //   sandbox2.active();
+          await import("/vue3-web-component/dist/vue3-weather-consumer.umd.js");
           const $consumer2 = document.getElementById("consumer2");
           $consumer2.setAttribute("city", arr[1].label);
           $consumer2.setAttribute("temperature", arr[1].value);
           $consumer2.addEventListener("msg", onCityClick);
-
+          // })(sandbox2.proxy);
+          //
+          // const sandbox3 = new ProxySandbox("wc-sandbox");
+          // (async function (window) {
+          //   sandbox3.active();
+          await import("/react-web-component/build/weather_consumer.js");
           const $consumer3 = document.getElementById("consumer3");
           $consumer3.setAttribute("city", arr[2].label);
           $consumer3.setAttribute("temperature", arr[2].value);
           $consumer3.addEventListener("msg", onCityClick);
+          // })(sandbox3.proxy);
         });
       });
     </script>
