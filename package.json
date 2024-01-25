@@ -1,16 +1,23 @@
 {
-  "name": "web-components-1",
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "pnpm build && cd packages/app1-web-component && pnpm dev",
+    "build": "lerna run build:wc",
+    "postinstall": "concurrently \"cd packages/app1-web-component && pnpm i\" \"cd packages/app2-vue3 && pnpm i\" \"cd packages/app3-vue2 && pnpm i\" \"cd packages/app4-react && pnpm i\""
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/tonylua/web-component-test1.git"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "koa": "^2.14.2",
-    "koa-static": "^5.0.0"
+    "concurrently": "^8.2.2",
+    "lerna": "^7.2.0"
   }
 }
